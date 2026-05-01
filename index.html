@@ -606,6 +606,10 @@
       try {
         const hex = extractDominantColour(heroImg);
         document.body.style.background = hex;
+        const btn = document.getElementById('pick-btn');
+        const isDark = relativeLuminance(hex) < 0.35;
+        btn.style.background = isDark ? '#fff' : '#111';
+        btn.style.color = isDark ? '#111' : '#fff';
       } catch (e) {
         // cross-origin or canvas taint — leave default
       }
