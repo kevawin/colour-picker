@@ -9,41 +9,75 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f0f0f0 url('./My_21st_03.jpeg') center/cover fixed;
+      background: #f0f0f0;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Photo header ── */
+    .photo-header {
+      width: 100%;
+      position: relative;
+      max-height: 420px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .photo-header img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .header-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.55) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 1rem 0 1rem;
+      gap: 0.6rem;
+    }
+
+    h1 {
+      font-size: clamp(1.1rem, 7.2vw, 3.2rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.45);
+      text-align: center;
+      white-space: normal;
+    }
+
+    /* ── Main content ── */
+    .content {
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 2.5rem 1rem;
       gap: 2rem;
-    }
-
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #111;
-      letter-spacing: -0.02em;
-    }
-
-    h2 {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: #888;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: -1.25rem;
+      width: 100%;
     }
 
     /* ── Swatches ── */
     .swatches {
       display: flex;
       gap: 1.5rem;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: center;
+      width: 100%;
+      padding: 0 1rem;
     }
 
     .swatch {
-      width: 200px;
+      flex: 1;
+      max-width: 200px;
       height: 220px;
       border-radius: 20px;
       box-shadow: 0 6px 30px rgba(0,0,0,0.15);
@@ -61,9 +95,7 @@
     .swatch:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
     .swatch:active { transform: scale(0.97); }
 
-    .swatch.spinning {
-      transition: background 0.06s ease;
-    }
+    .swatch.spinning { transition: background 0.06s ease; }
 
     .swatch.landing {
       transition: background 0.25s ease, transform 0.25s ease;
@@ -78,9 +110,7 @@
       transition: color 0.06s ease;
     }
 
-    .swatch.landing .colour-name {
-      transition: color 0.25s ease;
-    }
+    .swatch.landing .colour-name { transition: color 0.25s ease; }
 
     .colour-hex {
       font-size: 0.7rem;
@@ -283,88 +313,50 @@
     }
 
     .reset-link:hover { color: #666; }
-
-    /* ── Background photo ── */
-    .bg-bar {
-      position: fixed;
-      bottom: 1.25rem;
-      right: 1.25rem;
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      z-index: 100;
-    }
-
-    .bg-btn {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(6px);
-      color: #fff;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-      transition: background 0.15s;
-      white-space: nowrap;
-    }
-
-    .bg-btn:hover { background: rgba(0,0,0,0.75); }
-
-    body.has-bg {
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-    }
-
-    body.has-bg h1,
-    body.has-bg h2 {
-      color: #fff;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.6);
-    }
   </style>
 </head>
 <body>
 
-  <h1>Dani &amp; Kris' photo adventure</h1>
-  <h2>random colour picker</h2>
-
-  <div class="swatches">
-    <div class="swatch" id="swatch-a">
-      <span class="colour-name" id="name-a"></span>
-      <span class="colour-hex" id="hex-a"></span>
-      <span class="copied-toast">Copied</span>
+  <header class="photo-header">
+    <img id="hero-img" src="./My_21st_03.jpeg" alt="Dani and Kris">
+    <div class="header-overlay">
+      <h1>Dani &amp; Kris'<br>photo adventure</h1>
     </div>
-    <div class="swatch" id="swatch-b">
-      <span class="colour-name" id="name-b"></span>
-      <span class="colour-hex" id="hex-b"></span>
-      <span class="copied-toast">Copied</span>
-    </div>
-  </div>
+  </header>
 
-  <button class="pick" id="pick-btn">Pick colours</button>
+  <div class="content">
+    <button class="pick" id="pick-btn">And your colour is...</button>
 
-  <div class="bg-bar">
-    <input type="file" id="bg-file-input" accept="image/*" style="display:none">
-    <button class="bg-btn" id="bg-btn">Set background photo</button>
-    <button class="bg-btn" id="bg-clear-btn" style="display:none">Remove photo</button>
-  </div>
-
-  <details>
-    <summary>Customise palette</summary>
-    <div class="palette-body">
-      <div class="palette-grid" id="palette-grid"></div>
-      <div class="add-row">
-        <input type="color" id="color-input" value="#3b82f6">
-        <input type="text" class="name-input" id="name-input" placeholder="Name" maxlength="20">
-        <input type="text" class="hex-input" id="hex-input" placeholder="#3b82f6" maxlength="7">
-        <button id="add-btn">Add</button>
+    <div class="swatches">
+      <div class="swatch" id="swatch-a">
+        <span class="colour-name" id="name-a"></span>
+        <span class="colour-hex" id="hex-a"></span>
+        <span class="copied-toast">Copied</span>
       </div>
-      <div class="error-msg" id="error-msg"></div>
-      <button class="reset-link" id="reset-btn">Reset to defaults</button>
+      <div class="swatch" id="swatch-b">
+        <span class="colour-name" id="name-b"></span>
+        <span class="colour-hex" id="hex-b"></span>
+        <span class="copied-toast">Copied</span>
+      </div>
     </div>
-  </details>
+
+    <details>
+      <summary>Customise palette</summary>
+      <div class="palette-body">
+        <div class="palette-grid" id="palette-grid"></div>
+        <div class="add-row">
+          <input type="color" id="color-input" value="#3b82f6">
+          <input type="text" class="name-input" id="name-input" placeholder="Name" maxlength="20">
+          <input type="text" class="hex-input" id="hex-input" placeholder="#3b82f6" maxlength="7">
+          <button id="add-btn">Add</button>
+        </div>
+        <div class="error-msg" id="error-msg"></div>
+        <button class="reset-link" id="reset-btn">Reset to defaults</button>
+      </div>
+    </details>
+  </div>
+
+  <canvas id="sample-canvas" style="display:none"></canvas>
 
   <script>
     const DEFAULT_PALETTE = [
@@ -419,7 +411,6 @@
       hexEl.style.color = tc;
     }
 
-    // Slot machine animation: rapid cycling that slows to a stop
     function animateSwatch(swatchEl, nameEl, hexEl, finalColour, startDelay, onDone) {
       const TOTAL_FRAMES = 22;
       let frame = 0;
@@ -440,7 +431,6 @@
         setSwatch(swatchEl, nameEl, hexEl, rand);
 
         frame++;
-        // exponential slowdown: 40ms → ~380ms
         const progress = frame / TOTAL_FRAMES;
         const delay = 40 + Math.pow(progress, 2.2) * 340;
         setTimeout(step, delay);
@@ -481,7 +471,6 @@
 
     document.getElementById('pick-btn').addEventListener('click', pickTwo);
 
-    // Click swatch to copy hex
     ['a','b'].forEach(id => {
       const swatch = document.getElementById('swatch-' + id);
       swatch.addEventListener('click', () => {
@@ -582,49 +571,53 @@
 
     renderPaletteGrid();
 
-    // ── Background photo ──
-    const BG_STORAGE_KEY = 'colour-picker-bg-photo';
-    const DEFAULT_BG = "url('./My_21st_03.jpeg')";
-
-    function applyBg(dataUrl) {
-      document.body.style.backgroundImage = `url(${dataUrl})`;
-      document.body.classList.add('has-bg');
-      document.getElementById('bg-clear-btn').style.display = '';
+    // ── Extract dominant colour from hero image and apply as page background ──
+    function rgbToHex(r, g, b) {
+      return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
     }
 
-    function clearBg() {
-      document.body.style.backgroundImage = DEFAULT_BG;
-      document.body.classList.add('has-bg');
-      document.getElementById('bg-clear-btn').style.display = 'none';
-      localStorage.removeItem(BG_STORAGE_KEY);
+    function extractDominantColour(img) {
+      const canvas = document.getElementById('sample-canvas');
+      const size = 100;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, size, size);
+      const data = ctx.getImageData(0, 0, size, size).data;
+
+      // Bucket pixels into coarse colour groups (32-step buckets)
+      const buckets = {};
+      for (let i = 0; i < data.length; i += 4) {
+        const r = Math.round(data[i]   / 32) * 32;
+        const g = Math.round(data[i+1] / 32) * 32;
+        const b = Math.round(data[i+2] / 32) * 32;
+        const key = `${r},${g},${b}`;
+        buckets[key] = (buckets[key] || 0) + 1;
+      }
+
+      const dominant = Object.entries(buckets).sort((a, b) => b[1] - a[1])[0][0];
+      const [r, g, b] = dominant.split(',').map(Number);
+      return rgbToHex(Math.min(r, 255), Math.min(g, 255), Math.min(b, 255));
     }
 
-    document.body.classList.add('has-bg');
-    document.getElementById('bg-clear-btn').style.display = 'none';
+    const heroImg = document.getElementById('hero-img');
 
-    const savedBg = localStorage.getItem(BG_STORAGE_KEY);
-    if (savedBg) applyBg(savedBg);
+    function applyDominantBg() {
+      try {
+        const hex = extractDominantColour(heroImg);
+        document.body.style.background = hex;
+      } catch (e) {
+        // cross-origin or canvas taint — leave default
+      }
+    }
 
-    document.getElementById('bg-btn').addEventListener('click', () => {
-      document.getElementById('bg-file-input').click();
-    });
+    if (heroImg.complete) {
+      applyDominantBg();
+    } else {
+      heroImg.addEventListener('load', applyDominantBg);
+    }
 
-    document.getElementById('bg-file-input').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const dataUrl = ev.target.result;
-        applyBg(dataUrl);
-        try { localStorage.setItem(BG_STORAGE_KEY, dataUrl); } catch {}
-      };
-      reader.readAsDataURL(file);
-      e.target.value = '';
-    });
-
-    document.getElementById('bg-clear-btn').addEventListener('click', clearBg);
-
-    // Initial pick on load
+    // ── Initial pick on load ──
     const idx = Math.floor(Math.random() * palette.length);
     let idx2;
     do { idx2 = Math.floor(Math.random() * palette.length); } while (idx2 === idx);
